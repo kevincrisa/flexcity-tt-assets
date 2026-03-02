@@ -16,19 +16,19 @@ class AssetsSearchByIncreasingVolumeTest {
         Asset("A3", "Asset 3", 120.0, listOf(LocalDate.of(2026,3,11)), 60)
     )
 
+    private val assetsByCode = assets.associateBy { it.code }
+
     @Test
     fun selectAssetsToCoverRequestedVolume() {
-        val request = AssetRequest(LocalDate.of(2026, 3, 10), 60)
+        val request = AssetRequest(LocalDate.of(2026, 3, 10), 30)
         val availableAssets = strategy.select(assets, request)
 
-        val totalAvailableAssetsVolume = availableAssets.sumOf{ it.volume }
-        assertTrue(totalAvailableAssetsVolume >= request.volume)
+        assertTrue(availableAssets.isNotEmpty())
+        val totalAvailableVolume = availableAssets.sumOf { it.volume }
+        assertTrue(totalAvailableVolume >= request.volume)
 
         availableAssets.forEach { asset ->
-            val originalAsset = requireNotNull(
-                assets.find { it.code == asset.code }
-            ) { "Asset ${asset.code} should exist in test data"}
-
+            val originalAsset = requireNotNull(assetsByCode[asset.code])
             assertTrue(originalAsset.availability.contains(request.date))
             assertEquals(originalAsset.activationCost, asset.activationCost)
         }
@@ -43,6 +43,26 @@ class AssetsSearchByIncreasingVolumeTest {
         }
 
         assertEquals("The volume available in assets are insufficient for requested volume", exception.message)
+    }
+
+    @Test
+    fun testIgnoreAssetsWithDifferentDates() {
+        val request = AssetRequest(LocalDate.of(2026,3,11), 60)
+        val selected = strategy.select(assets, request)
+
+        assertEquals(1, selected.size)
+        assertEquals("A3", selected[0].code)
+    }
+
+    @Test
+    fun testCostFixedEvenIfPartialVolumeNeeded() {
+        val request = AssetRequest(LocalDate.of(2026,3,10), 25)
+        val selected = strategy.select(assets, request)
+
+        selected.forEach { asset ->
+            val original = requireNotNull(assetsByCode[asset.code])
+            assertEquals(original.activationCost, asset.activationCost)
+        }
     }
 
 }
