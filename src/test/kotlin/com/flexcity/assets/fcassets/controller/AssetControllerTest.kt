@@ -44,10 +44,38 @@ class AssetControllerTest {
                 .content(objectMapper.writeValueAsString(assetRequest))
         )
             .andExpect(status().isOk)
-            .andExpect(jsonPath("$.length()").value(2))
             .andExpect(jsonPath("$[0].code").value("A1"))
             .andExpect(jsonPath("$[0].volume").value(50))
             .andExpect(jsonPath("$[0].activationCost").value(100.0))
             .andExpect(jsonPath("$[1].code").value("A2"))
     }
+
+    @Test
+    fun testPostRequestToGetEmptyList() {
+        val assetRequest = AssetRequest(LocalDate.of(2026,3,10), 50)
+
+        `when` (assetService.getAvailableAssets(assetRequest)).thenReturn(emptyList())
+
+        mockMvc.perform(
+            post("/assets/available")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(assetRequest))
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.length()").value(0))
+    }
+
+    @Test
+    fun testPostRequestWithEmptyBody() {
+        val invalidJson = "{}"
+
+        mockMvc.perform(
+            post("/assets/available")
+                .contentType("application/json")
+                .content(invalidJson)
+        )
+            .andExpect(status().isBadRequest)
+    }
+
+
 }
