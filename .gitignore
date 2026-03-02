@@ -1,25 +1,40 @@
-HELP.md
+# ========================
+# Gradle
+# ========================
+.gradle/
+build/
+out/
 
-# Gradle build files
-/build/
-/.gradle/
-/out/
+# Gradle wrapper
+gradle/wrapper/gradle-wrapper.jar
 
-# IDE files
+# ========================
+# IntelliJ / IDE
+# ========================
 *.iml
 .idea/
 *.ipr
 *.iws
 *.vscode/
 
-# OS files
+# ========================
+# Operating System
+# ========================
 .DS_Store
 Thumbs.db
 
-# Logs
+# ========================
+# Logs and temporary files
+# ========================
 *.log
+tmp/
+*.swp
+*.swo
 
-# Application files
+# ========================
+# Compiled classes, jars, wars
+# ========================
+*.class
 *.jar
 *.war
-*.class
+*.ear
