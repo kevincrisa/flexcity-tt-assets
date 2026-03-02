@@ -1,6 +1,7 @@
 package com.flexcity.assets.fcassets.domain
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
@@ -32,7 +33,17 @@ class AssetsSearchByIncreasingVolumeTest {
             val originalAsset = assets.find { it.code == asset.code }!!
             assertEquals(originalAsset.activationCost, asset.activationCost)
         }
+    }
 
+    @Test
+    fun testExceptionIfRequestedVolumeNotCovered() {
+        val request = AssetRequest(LocalDate.of(2026,3,10), 200)
+
+        val exception = assertThrows(IllegalArgumentException::class.java) {
+            strategy.select(assets, request)
+        }
+
+        assertEquals("The volume available in assets are insufficient for requested volume", exception.message)
     }
 
 }
