@@ -25,12 +25,11 @@ class AssetsSearchByIncreasingVolumeTest {
         assertTrue(totalAvailableAssetsVolume >= request.volume)
 
         availableAssets.forEach { asset ->
-            val originalAsset = assets.find { it.code == asset.code }!!
-            assertTrue { originalAsset.availability.contains(request.date) }
-        }
+            val originalAsset = requireNotNull(
+                assets.find { it.code == asset.code }
+            ) { "Asset ${asset.code} should exist in test data"}
 
-        availableAssets.forEach { asset ->
-            val originalAsset = assets.find { it.code == asset.code }!!
+            assertTrue(originalAsset.availability.contains(request.date))
             assertEquals(originalAsset.activationCost, asset.activationCost)
         }
     }
