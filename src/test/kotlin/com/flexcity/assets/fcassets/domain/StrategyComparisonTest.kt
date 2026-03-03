@@ -3,23 +3,20 @@ package com.flexcity.assets.fcassets.domain
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
+import com.flexcity.assets.fcassets.util.AssetGeneration
 
 class StrategyComparisonTest {
 
-    private val assets = listOf(
-        Asset("A1", "Asset 1", 10.0, listOf(LocalDate.of(2026,3,10)), 60),
-        Asset("A2", "Asset 2", 9.0, listOf(LocalDate.of(2026,3,10)), 50),
-        Asset("A3", "Asset 3", 18.0, listOf(LocalDate.of(2026,3,10)), 100)
-    )
-
     private val request = AssetRequest(
         date = LocalDate.of(2026,3,10),
-        volume = 100,
-        mode = CalculationMode.RATIO // sera ignoré ici
+        volume = 100
     )
 
     @Test
     fun testIfRatioStrategyHaveMinimalCost(){
+
+        val assetGeneration = AssetGeneration()
+        val assets = assetGeneration.generateAssets(100)
 
         val volumeStrategy = AssetsSearchByIncreasingVolume()
         val costStrategy = AssetsSearchByIncreasingCost()
