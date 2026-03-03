@@ -2,6 +2,10 @@ package com.flexcity.assets.fcassets.domain
 
 // Search list of available assets sorted by increasing volume
 class AssetsSearchByIncreasingVolume: AssetRequestStrategy {
+
+    override fun modeSupported(mode: CalculationMode) =
+        mode == CalculationMode.VOLUME
+
     override fun select(
         assets: List<Asset>,
         request: AssetRequest

@@ -1,6 +1,10 @@
 package com.flexcity.assets.fcassets.domain
 
 class AssetsSearchByRatioVolumeCost: AssetRequestStrategy {
+
+    override fun modeSupported(mode: CalculationMode) =
+        mode == CalculationMode.RATIO
+
     override fun select(
         assets: List<Asset>,
         request: AssetRequest

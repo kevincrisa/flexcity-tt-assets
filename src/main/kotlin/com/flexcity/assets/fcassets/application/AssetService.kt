@@ -6,7 +6,7 @@ import java.time.LocalDate
 
 @Service
 class AssetService (
-    private val strategy: AssetRequestStrategy = AssetsSearchByIncreasingVolume()
+    private val strategies: List<AssetRequestStrategy>
 ){
     fun getAvailableAssets(request: AssetRequest): List<AvailableAsset>{
         val assets = listOf(
@@ -26,6 +26,11 @@ class AssetService (
             Asset("A14","Asset 14",160.0, listOf(LocalDate.of(2026,3,10)), 75),
             Asset("A15","Asset 15",70.0, listOf(LocalDate.of(2026,3,12)), 35)
         )
+
+        val strategy = strategies.firstOrNull {
+            it.modeSupported(request.mode)
+        } ?: throw IllegalArgumentException("No strategy found for mode ${request.mode}")
+
         return strategy.select(assets, request)
     }
 }

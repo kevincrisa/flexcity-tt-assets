@@ -1,6 +1,10 @@
 package com.flexcity.assets.fcassets.domain
 
 class AssetsSearchByIncreasingCost: AssetRequestStrategy {
+
+    override fun modeSupported(mode: CalculationMode) =
+        mode == CalculationMode.COST
+
     override fun select(
         assets: List<Asset>,
         request: AssetRequest
