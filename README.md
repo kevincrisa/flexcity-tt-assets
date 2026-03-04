@@ -20,7 +20,19 @@ In this test, multiple strategies have been implemented to compare results.
 
 ### Run application
 
-In a bash terminal, enter
+In a bash terminal, in the root directory of the project, enter
 ```
 ./gradlew bootRun
+```
+
+The application starts with the following address:
+```
+http://localhost:8080
+```
+
+### Run application
+
+To run tests, in a bash terminal, in the root directory of the project, enter:
+```
+./gradlew test
 ```
