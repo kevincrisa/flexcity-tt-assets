@@ -1,5 +1,8 @@
 package com.flexcity.assets.fcassets.domain
 
+import org.springframework.stereotype.Component
+
+@Component
 class AssetsSearchByIncreasingCost: AssetRequestStrategy {
 
     override fun modeSupported(mode: CalculationMode) =

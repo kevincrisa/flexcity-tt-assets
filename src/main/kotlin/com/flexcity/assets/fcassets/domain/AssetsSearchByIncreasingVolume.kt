@@ -1,6 +1,9 @@
 package com.flexcity.assets.fcassets.domain
 
+import org.springframework.stereotype.Component
+
 // Search list of available assets sorted by increasing volume
+@Component
 class AssetsSearchByIncreasingVolume: AssetRequestStrategy {
 
     override fun modeSupported(mode: CalculationMode) =
