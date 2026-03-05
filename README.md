@@ -67,3 +67,16 @@ The mode is optional because "RATIO" mode is set by default, but you can select 
 - "RATIO": the available assets are sorted by ratio volume/cost descending
 
 
+## Design decisions
+
+### Strategy pattern
+
+To compare results from different calculation modes, all modes are impletes using Strategy pattern:
+- AssetsSearchByIncreasingVolume
+- AssetsSearchByIncreasingCost
+- AssetsSearchByRatioVolumeCost
+
+![Strategy diagram](resources/img/img.png)
+
+
+
