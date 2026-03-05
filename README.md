@@ -71,12 +71,18 @@ The mode is optional because "RATIO" mode is set by default, but you can select 
 
 ### Strategy pattern
 
-To compare results from different calculation modes, all modes are impletes using Strategy pattern:
+To compare results from different calculation modes, all modes are implemented using Strategy pattern:
 - AssetsSearchByIncreasingVolume
 - AssetsSearchByIncreasingCost
 - AssetsSearchByRatioVolumeCost
 
 ![Strategy diagram](resources/img/img.png)
+
+This pattern allows to add another search algorithms without modifying others and each strategy can be tested separately.
+We can select one of the strategies in the POST request.
+
+### Domain-driven
+
 
 
 
