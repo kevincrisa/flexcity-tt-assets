@@ -98,6 +98,33 @@ There are 2 data class in the domain:
 
 Different strategies have been implemented to compare them and found the best approach to select the best combination of assets with minimizing total activation cost
 
+#### Search by increasing volume
+
+This approach consists to sort available assets by increasing volume and add each asset until the requested volume is reached.
+```
+val availableAssetsSortByIncreasingVolume = availableAssetsAtDate.sortedBy { it.volume }
+
+val assetsSelected = mutableListOf<AvailableAsset>()
+var requestedVolume = request.volume
+
+for (asset in availableAssetsSortByIncreasingVolume){
+    if(requestedVolume <= 0) break
+    val availableVolume = minOf(asset.volume, requestedVolume)
+    assetsSelected.add(AvailableAsset(asset.code, availableVolume, asset.activationCost))
+    requestedVolume -= availableVolume
+}
+```
+
+The advantage of this strategy is its complexity O(n log n) (can be optimized) so the execution time will be short even with a large set of assets.
+
+But, if the volume requested is big and the number of assets is big too, this strategy can return a large list of available assets for a cost which can be large.
+
+Example:
+| Asset  | Volume  | Activation cost  |
+|---|---|---|
+| Asset 1  | 50  | 40  |
+| Asset 2  | 60  | 50  |
+| Asset 3  | 100  | 80  |
 
 
 
