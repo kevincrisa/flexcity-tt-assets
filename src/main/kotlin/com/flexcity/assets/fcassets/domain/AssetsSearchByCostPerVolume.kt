@@ -3,7 +3,7 @@ package com.flexcity.assets.fcassets.domain
 import org.springframework.stereotype.Component
 
 @Component
-class AssetsSearchByRatioVolumeCost: AssetRequestStrategy {
+class AssetsSearchByCostPerVolume: AssetRequestStrategy {
 
     override fun modeSupported(mode: CalculationMode) =
         mode == CalculationMode.RATIO
@@ -15,13 +15,13 @@ class AssetsSearchByRatioVolumeCost: AssetRequestStrategy {
         val availableAssetsAtDate = assets.filter { it.availability.contains(request.date) }
         if (availableAssetsAtDate.isEmpty()) return emptyList()
 
-        val availableAssetsSortByRatioVolumeCost =
-            availableAssetsAtDate.sortedByDescending { it.volume.toDouble() / it.activationCost }
+        val availableAssetsSortByCostPerVolume =
+            availableAssetsAtDate.sortedBy { it.activationCost / it.volume.toDouble() }
 
         val assetsSelected = mutableListOf<AvailableAsset>()
         var requestedVolume = request.volume
 
-        for (asset in availableAssetsSortByRatioVolumeCost){
+        for (asset in availableAssetsSortByCostPerVolume){
             if(requestedVolume <= 0) break
             assetsSelected.add(AvailableAsset(asset.code, asset.volume, asset.activationCost))
             requestedVolume -= asset.volume

@@ -64,7 +64,7 @@ In Postman:
 The mode is optional because "RATIO" mode is set by default, but you can select the following modes:
 - "VOLUME": the available assets are sorted by volume increasing
 - "COST": the available assets are sorted by cost increasing
-- "RATIO": the available assets are sorted by ratio volume/cost descending
+- "RATIO": the available assets are sorted by cost per volume increasing
 
 
 ## Design decisions
@@ -74,7 +74,7 @@ The mode is optional because "RATIO" mode is set by default, but you can select 
 To compare results from different calculation modes, all modes are implemented using Strategy pattern:
 - AssetsSearchByIncreasingVolume
 - AssetsSearchByIncreasingCost
-- AssetsSearchByRatioVolumeCost
+- AssetsSearchByCostPerVolume
 
 ![Strategy diagram](resources/img/img.png)
 
@@ -115,16 +115,88 @@ for (asset in availableAssetsSortByIncreasingVolume){
 }
 ```
 
-The advantage of this strategy is its complexity O(n log n) (can be optimized) so the execution time will be short even with a large set of assets.
-
+The advantage of this strategy is its complexity O(n log n) so the execution time will be short even with a large set of assets.
 But, if the volume requested is big and the number of assets is big too, this strategy can return a large list of available assets for a cost which can be large.
 
-Example:
+Simple example:
 | Asset  | Volume  | Activation cost  |
 |---|---|---|
 | Asset 1  | 50  | 40  |
 | Asset 2  | 60  | 50  |
 | Asset 3  | 100  | 80  |
+
+If the volume requested is 100, with this strategy, the assets selected are Asset 1 + Asset 2 for an activation cost of 90.
+But, it's not the optimal solution because the Asset 3 has a volume of 100 with an activation cost of 80.
+The optimal solution is to select only Asset 3.
+
+#### Search by increasing cost
+
+This approach is the same as increasing volume but with activation cost.
+
+```
+val availableAssetsSortByIncreasingCost = availableAssetsAtDate.sortedBy { it.activationCost }
+
+val assetsSelected = mutableListOf<AvailableAsset>()
+var requestedVolume = request.volume
+
+for (asset in availableAssetsSortByIncreasingCost){
+    if(requestedVolume <= 0) break
+    val availableVolume = minOf(asset.volume, requestedVolume)
+    assetsSelected.add(AvailableAsset(asset.code, availableVolume, asset.activationCost))
+    requestedVolume -= availableVolume
+}
+```
+
+This complexity of this approach is the same as increasing volume : O(n log n).
+But, if the volume requested is big and the number of assets is big too, this strategy can return a large list of available assets for a cost which can be large.
+
+Simple example:
+| Asset  | Volume  | Activation cost  |
+|---|---|---|
+| Asset 1  | 50  | 20  |
+| Asset 2  | 100  | 100  |
+| Asset 3  | 150  | 110  |
+
+If the volume requested is 150, with this strategy, the assets selected are Asset 1 + Asset 2 for an activation cost of 120.
+But, it's not the optimal solution because the Asset 3 has a volume of 150 with an activation cost of 110.
+The optimal solution is to select only Asset 3.
+
+#### Search by increasing cost per volume
+
+This approach consists to sort available assets with cost per volume increasing
+
+```
+val availableAssetsSortByCostPerVolume =
+            availableAssetsAtDate.sortedBy { it.activationCost / it.volume.toDouble() }
+
+val assetsSelected = mutableListOf<AvailableAsset>()
+var requestedVolume = request.volume
+
+for (asset in availableAssetsSortByCostPerVolume){
+    if(requestedVolume <= 0) break
+    assetsSelected.add(AvailableAsset(asset.code, asset.volume, asset.activationCost))
+    requestedVolume -= asset.volume
+}
+```
+
+The complexity of this approach is same as other : O(n log n).
+This solution is a good approach for some configurations and requested volume:
+| Asset  | Volume  | Activation cost  | Cost/volume  |
+|---|---|---|---|
+| Asset 1  | 10  | 5  | 0.5  |
+| Asset 2  | 100  | 25  | 0.25  |
+| Asset 3  | 40  | 10  | 0.25 |
+
+In this example, the order of the sort is : Asset 2 → Asset 3 → Asset 1.
+If the requested volume is 100, only Asset 2 will be returned for a total activation cost of 25.
+
+BUT, if the requested volume is 110, the Asset 2 and Asset 3 will be returned for a total activation cost of 35.
+OR, if we select Asset 2 and Asset 1, the volume is reached with a total activation cost of 30.
+
+This approach is non-optimal for all configurations.
+
+
+
 
 
 

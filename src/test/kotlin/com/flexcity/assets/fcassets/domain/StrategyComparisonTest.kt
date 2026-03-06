@@ -20,7 +20,7 @@ class StrategyComparisonTest {
 
         val volumeStrategy = AssetsSearchByIncreasingVolume()
         val costStrategy = AssetsSearchByIncreasingCost()
-        val ratioStrategy = AssetsSearchByRatioVolumeCost()
+        val ratioStrategy = AssetsSearchByCostPerVolume()
 
         val volumeStrategySelectedAssets = volumeStrategy.select(assets, request)
         val costStrategySelectedAssets = costStrategy.select(assets, request)
