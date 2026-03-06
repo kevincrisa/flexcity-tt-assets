@@ -195,6 +195,31 @@ OR, if we select Asset 2 and Asset 1, the volume is reached with a total activat
 
 This approach is non-optimal for all configurations.
 
+## Trade-offs and assumptions
+
+### Trade-offs
+
+- Assets are stored in-memory and not in a database
+- Cost per volume strategy is better than others but not for all configurations
+- The strategies complexity are O(n log n) so there are functional for large datasets
+
+### Assumptions
+
+- Availability is bases on date. A match is required car it's possible te not have assets available for a specific date.
+- A better strategy to select assets can be found.
+- An asset activation cost is fixed event if we use partial volume. It's useful to select assets which use partial volume close to the total volume to optimize cost.
+
+## Testing
+
+- The controller is tested with a mock to test if a POST request receive a response, and also watch when the request body is invalid
+- Each strategy is testes with unit tests
+- A test class has been created to compare results between all strategies with a randomized dataset generation
+
+## Improvements
+
+- A better strategy can be found to select assets with minimal total activation cost
+- Use database instead of in-memory assets
+- Optimization of sort to have O(n) complexity
 
 
 
