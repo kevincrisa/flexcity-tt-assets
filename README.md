@@ -81,7 +81,24 @@ To compare results from different calculation modes, all modes are implemented u
 This pattern allows to add another search algorithms without modifying others and each strategy can be tested separately.
 We can select one of the strategies in the POST request.
 
-### Domain-driven
+
+### Domain-driven architecture
+
+Structure of the project:
+- controller : AssetController → receive the POST request, call the application (AssetService) and returns the response
+- application : AssetService → verify if a strategy exists based on mode sent by POST request and call the domain class to perform calculation mode
+- domain : Classes implements AssetRequestStrategy → filter the assets to found which are available at date in the request and perform the calculation to return list of available assets
+
+There are 2 data class in the domain:
+- Asset : describes an asset (code, name, activationCost, availability and volume)
+- AssetRequest: describes an asset request (representation of the body sent by POST request) (date, volume, mode)
+
+
+### Strategies
+
+Different strategies have been implemented to compare them and found the best approach to select the best combination of assets with minimizing total activation cost
+
+
 
 
 
