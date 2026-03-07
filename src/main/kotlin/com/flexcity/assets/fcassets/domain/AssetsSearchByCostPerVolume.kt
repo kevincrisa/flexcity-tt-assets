@@ -45,28 +45,8 @@ class AssetsSearchByCostPerVolume: AssetRequestStrategy {
         val availableAssetsSortByCostPerVolume =
             availableAssetsAtDate.sortedBy { it.activationCost / it.volume.toDouble() }
 
-        // List which will contain assets selected
-        val assetsSelected = mutableListOf<AvailableAsset>()
-        // Requested volume will be used for check if we need to fill the assets selected list
-        var requestedVolume = assetRequest.volume
-
-        // Iteration in available assets to fill the list
-        for (asset in availableAssetsSortByCostPerVolume){
-            // If the request volume has been satisfied, stop the loop
-            if(requestedVolume <= 0) break
-            // Add current asset in the assets selected list
-            assetsSelected.add(AvailableAsset(asset.code, asset.volume, asset.activationCost))
-            // Decrease the asset volume to requested volume
-            requestedVolume -= asset.volume
-        }
-
-        // If after selecting all possible assets we still need volume,
-        // it means the request cannot be satisfied
-        if (requestedVolume > 0){
-            throw IllegalArgumentException("The volume available in assets are insufficient for requested volume")
-        }
-
-        // Return list of assets selected
-        return assetsSelected
+        // Use helper to select assets and validate volume
+        return AssetsSearchHelper.selectAssetsToFillVolume(
+            availableAssetsSortByCostPerVolume, assetRequest.volume)
     }
 }
