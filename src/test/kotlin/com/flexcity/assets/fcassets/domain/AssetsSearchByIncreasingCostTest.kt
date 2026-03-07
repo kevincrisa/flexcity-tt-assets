@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
-class AssetsSearchByIncreasingVolumeTest {
+class AssetsSearchByIncreasingCostTest {
 
-    private val strategy = AssetsSearchByIncreasingVolume()
+    private val strategy = AssetsSearchByIncreasingCost()
 
     private val assets = listOf(
         Asset("A1", "Asset 1", 100.0, listOf(LocalDate.of(2026,3,10)), 50),
@@ -64,5 +64,4 @@ class AssetsSearchByIncreasingVolumeTest {
             assertEquals(original.activationCost, asset.activationCost)
         }
     }
-
 }
