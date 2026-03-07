@@ -212,8 +212,10 @@ This approach is non-optimal for all configurations.
 ## Testing
 
 - The controller is tested with a mock to test if a POST request receive a response, and also watch when the request body is invalid
-- Each strategy is testes with unit tests
+- Each strategy is tested with unit tests
 - A test class has been created to compare results between all strategies with a randomized dataset generation
+
+![Test coverage](resources/img/test%20coverage.png)
 
 ## Improvements
 
