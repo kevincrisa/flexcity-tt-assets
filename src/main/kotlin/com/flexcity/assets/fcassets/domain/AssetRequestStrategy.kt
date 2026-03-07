@@ -13,16 +13,16 @@ interface AssetRequestStrategy {
      * This method allows the application to dynamically choose
      * the correct strategy depending on the request.
      *
-     * @param mode The calculationMode sent by the request
+     * @param calculationMode The calculationMode sent by the request
      * @return Indicates if the mode sent is supported by the strategy
      */
-    fun modeSupported(mode: CalculationMode): Boolean
+    fun modeSupported(calculationMode: CalculationMode): Boolean
     /**
      * Selects the most relevant assets according to the strategy logic.
      *
-     * @param assets The list of all assets
-     * @param request The request containing the selection criteria (date, volume requested)
+     * @param assetsList The list of all assets
+     * @param assetRequest The request containing the selection criteria (date, volume requested)
      * @return The list of assets that match the selection criteria
      */
-    fun select(assets: List<Asset>, request: AssetRequest): List<AvailableAsset>
+    fun select(assetsList: List<Asset>, assetRequest: AssetRequest): List<AvailableAsset>
 }
