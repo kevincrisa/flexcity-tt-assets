@@ -17,6 +17,8 @@ class AssetRepository {
      * Returns all assets to be filtered by the domain.
      *
      * Here, this method returns in-memory data for demonstration.
+     *
+     * @return The list of all assets
      */
     fun getAllAssets(): List<Asset> {
         return listOf(

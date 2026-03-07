@@ -17,8 +17,11 @@ class AssetService (
 ){
     /**
      * Returns the list of available assets based on the request.
+     *
+     * @param assetRequest The request sent by the client
+     * @return The list of available assets filtered with the request
      */
-    fun getAvailableAssets(request: AssetRequest): List<AvailableAsset>{
+    fun getAvailableAssets(assetRequest: AssetRequest): List<AvailableAsset>{
         // Retrieve all assets from the repository
         val assets = assetRepository.getAllAssets()
 
@@ -31,10 +34,10 @@ class AssetService (
          * - RATIO
          */
         val strategy = strategies.firstOrNull {
-            it.modeSupported(request.mode)
-        } ?: throw IllegalArgumentException("No strategy found for mode ${request.mode}")
+            it.modeSupported(assetRequest.mode)
+        } ?: throw IllegalArgumentException("No strategy found for mode ${assetRequest.mode}")
 
         // Return the list of available assets based on all assets retrieved on repository and request data
-        return strategy.select(assets, request)
+        return strategy.select(assets, assetRequest)
     }
 }
