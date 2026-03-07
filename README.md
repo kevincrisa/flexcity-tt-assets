@@ -100,7 +100,7 @@ Different strategies have been implemented to compare them and found the best ap
 
 #### Search by increasing volume
 
-This approach consists to sort available assets by increasing volume and add each asset until the requested volume is reached.
+This approach consists of sort available assets by increasing volume and add each asset until the requested volume is reached.
 ```
 val availableAssetsSortByIncreasingVolume = availableAssetsAtDate.sortedBy { it.volume }
 
@@ -163,7 +163,7 @@ The optimal solution is to select only Asset 3.
 
 #### Search by increasing cost per volume
 
-This approach consists to sort available assets with cost per volume increasing
+This approach consists of sort available assets with cost per volume increasing
 
 ```
 val availableAssetsSortByCostPerVolume =
@@ -221,7 +221,7 @@ This approach is non-optimal for all configurations.
 
 - A better strategy can be found to select assets with minimal total activation cost
 - Use database instead of in-memory assets
-- Optimization of sort to have O(n) complexity
+- Optimization of sort to have O(n) complexity (with database)
 
 
 
