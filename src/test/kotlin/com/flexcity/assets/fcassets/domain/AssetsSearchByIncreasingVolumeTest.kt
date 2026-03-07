@@ -1,6 +1,7 @@
 package com.flexcity.assets.fcassets.domain
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -63,6 +64,16 @@ class AssetsSearchByIncreasingVolumeTest {
             val original = requireNotNull(assetsByCode[asset.code])
             assertEquals(original.activationCost, asset.activationCost)
         }
+    }
+
+    @Test
+    fun testModeSupportedIsEqual() {
+        assertTrue(strategy.modeSupported(CalculationMode.VOLUME))
+    }
+
+    @Test
+    fun testModeSupportedIsDIfferent() {
+        assertFalse(strategy.modeSupported(CalculationMode.RATIO))
     }
 
 }

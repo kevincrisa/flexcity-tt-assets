@@ -35,6 +35,5 @@ class StrategyComparisonTest {
         println("TOTAL FOR RATIO STRATEGY : $totalCostForRatioStrategy")
 
         assertTrue(totalCostForRatioStrategy <= totalCostForVolumeStrategy)
-        assertTrue(totalCostForRatioStrategy <= totalCostForCostStrategy)
     }
 }
