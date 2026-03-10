@@ -55,8 +55,8 @@ In Postman:
 - in Body tab, you have to select "raw" and put JSON data with date, volume, and mode (optional):
 ```
 {
-  "date": "2026-03-10",
-  "volume": 100,
+  "activationDate": "2026-03-10",
+  "requestedVolume": 100,
   "mode": "RATIO" //OPTIONAL
 }
 ```

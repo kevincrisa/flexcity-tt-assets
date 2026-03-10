@@ -46,7 +46,7 @@ class AssetServiceTest {
     @Test
     fun `getAvailableAssets should return assets using VOLUME strategy`() {
         val request = AssetRequest(LocalDate.of(2026,3,10), 50, CalculationMode.VOLUME)
-        val result = service.getAvailableAssets(request)
+        val result = service.retrieveAvailableAssets(request)
 
         assertEquals(2, result.size)
         assertEquals("A1", result[0].code)
@@ -58,7 +58,7 @@ class AssetServiceTest {
         val request = AssetRequest(LocalDate.of(2026,3,10), 50, CalculationMode.RATIO)
 
         val exception = assertThrows(IllegalArgumentException::class.java) {
-            service.getAvailableAssets(request)
+            service.retrieveAvailableAssets(request)
         }
 
         assertEquals("No strategy found for mode ${request.mode}", exception.message)

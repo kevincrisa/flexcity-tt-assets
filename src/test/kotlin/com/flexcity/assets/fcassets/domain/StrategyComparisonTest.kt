@@ -8,8 +8,8 @@ import com.flexcity.assets.fcassets.util.AssetGeneration
 class StrategyComparisonTest {
 
     private val request = AssetRequest(
-        date = LocalDate.of(2026,3,10),
-        volume = 100
+        activationDate = LocalDate.of(2026,3,10),
+        requestedVolume = 100
     )
 
     @Test

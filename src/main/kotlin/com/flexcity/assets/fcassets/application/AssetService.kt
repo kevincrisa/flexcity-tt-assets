@@ -4,40 +4,20 @@ import com.flexcity.assets.fcassets.domain.*
 import com.flexcity.assets.fcassets.infrastructure.AssetRepository
 import org.springframework.stereotype.Service
 
-/**
- * Service responsible for the business logic related to asset selection.
- *
- * It retrieves all assets from the repository and delegates the selection
- * logic to the appropriate strategy depending on the request mode.
- */
 @Service
 class AssetService (
     private val assetRepository: AssetRepository,
-    private val strategies: List<AssetRequestStrategy>
+    private val assetRequestStrategies: List<AssetRequestStrategy>
 ){
-    /**
-     * Returns the list of available assets based on the request.
-     *
-     * @param assetRequest The request sent by the client
-     * @return The list of available assets filtered with the request
-     */
-    fun getAvailableAssets(assetRequest: AssetRequest): List<AvailableAsset>{
-        // Retrieve all assets from the repository
-        val assets = assetRepository.getAllAssets()
 
-        /**
-         * Find the strategy that supports the requested mode.
-         *
-         * Modes accepted are:
-         * - VOLUME
-         * - COST
-         * - RATIO
-         */
-        val strategy = strategies.firstOrNull {
+    fun retrieveAvailableAssets(assetRequest: AssetRequest): List<AvailableAsset>{
+        // Retrieve all assets from the repository
+        val allAssets = assetRepository.getAllAssets()
+
+        val strategy = assetRequestStrategies.firstOrNull {
             it.modeSupported(assetRequest.mode)
         } ?: throw IllegalArgumentException("No strategy found for mode ${assetRequest.mode}")
 
-        // Return the list of available assets based on all assets retrieved on repository and request data
-        return strategy.select(assets, assetRequest)
+        return strategy.select(allAssets, assetRequest)
     }
 }

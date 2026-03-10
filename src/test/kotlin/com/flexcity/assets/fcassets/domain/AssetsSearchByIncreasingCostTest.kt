@@ -26,11 +26,11 @@ class AssetsSearchByIncreasingCostTest {
 
         assertTrue(availableAssets.isNotEmpty())
         val totalAvailableVolume = availableAssets.sumOf { it.volume }
-        assertTrue(totalAvailableVolume >= request.volume)
+        assertTrue(totalAvailableVolume >= request.requestedVolume)
 
         availableAssets.forEach { asset ->
             val originalAsset = requireNotNull(assetsByCode[asset.code])
-            assertTrue(originalAsset.availability.contains(request.date))
+            assertTrue(originalAsset.availableDates.contains(request.activationDate))
             assertEquals(originalAsset.activationCost, asset.activationCost)
         }
     }

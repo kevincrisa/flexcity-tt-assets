@@ -36,7 +36,7 @@ class AssetControllerTest {
             AvailableAsset("A2", 30, 80.0)
         )
 
-        `when` (assetService.getAvailableAssets(assetRequest)).thenReturn(mockResponse)
+        `when` (assetService.retrieveAvailableAssets(assetRequest)).thenReturn(mockResponse)
 
         mockMvc.perform(
             post("/assets/available")
@@ -54,7 +54,7 @@ class AssetControllerTest {
     fun testPostRequestToGetEmptyList() {
         val assetRequest = AssetRequest(LocalDate.of(2026,3,10), 50)
 
-        `when` (assetService.getAvailableAssets(assetRequest)).thenReturn(emptyList())
+        `when` (assetService.retrieveAvailableAssets(assetRequest)).thenReturn(emptyList())
 
         mockMvc.perform(
             post("/assets/available")

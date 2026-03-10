@@ -5,21 +5,12 @@ import org.springframework.stereotype.Repository
 import java.time.LocalDate
 
 /**
- * Repository to retrieving assets from the data source.
- *
- * Here, data is in-memory and not stored in to a database.
- * Improvement : Store assets in database and modify code to connect to the database
+ * Repository providing the assets.
+ * Here, the data is in memory for demonstration purposes.
  */
 @Repository
 class AssetRepository {
 
-    /**
-     * Returns all assets to be filtered by the domain.
-     *
-     * Here, this method returns in-memory data for demonstration.
-     *
-     * @return The list of all assets
-     */
     fun getAllAssets(): List<Asset> {
         return listOf(
             Asset("A1", "Asset 1", 100.0, listOf(LocalDate.of(2026,3,10), LocalDate.of(2026,3,11)), 50),
