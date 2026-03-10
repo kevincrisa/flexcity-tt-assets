@@ -1,9 +1,11 @@
 package com.flexcity.assets.fcassets.domain
 
+import com.flexcity.assets.fcassets.application.AssetSelectionService
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 import com.flexcity.assets.fcassets.util.AssetGeneration
+import org.junit.jupiter.api.BeforeEach
 
 class StrategyComparisonTest {
 
@@ -12,19 +14,28 @@ class StrategyComparisonTest {
         requestedVolume = 100
     )
 
+    private lateinit var assetSelectionService: AssetSelectionService
+    private lateinit var assetVolumeStrategy: AssetsSearchByIncreasingVolume
+    private lateinit var assetCostStrategy: AssetsSearchByIncreasingCost
+    private lateinit var assetRatioStrategy: AssetsSearchByCostPerVolume
+
+    @BeforeEach
+    fun setup() {
+        assetSelectionService = AssetSelectionService()
+        assetVolumeStrategy = AssetsSearchByIncreasingVolume(assetSelectionService)
+        assetCostStrategy = AssetsSearchByIncreasingCost(assetSelectionService)
+        assetRatioStrategy = AssetsSearchByCostPerVolume(assetSelectionService)
+    }
+
     @Test
     fun testIfRatioStrategyHaveMinimalCost(){
 
         val assetGeneration = AssetGeneration()
         val assets = assetGeneration.generateAssets(100)
 
-        val volumeStrategy = AssetsSearchByIncreasingVolume()
-        val costStrategy = AssetsSearchByIncreasingCost()
-        val ratioStrategy = AssetsSearchByCostPerVolume()
-
-        val volumeStrategySelectedAssets = volumeStrategy.select(assets, request)
-        val costStrategySelectedAssets = costStrategy.select(assets, request)
-        val ratioStrategySelectedAssets = ratioStrategy.select(assets, request)
+        val volumeStrategySelectedAssets = assetVolumeStrategy.select(assets, request)
+        val costStrategySelectedAssets = assetCostStrategy.select(assets, request)
+        val ratioStrategySelectedAssets = assetRatioStrategy.select(assets, request)
 
         val totalCostForVolumeStrategy = volumeStrategySelectedAssets.sumOf { it.activationCost }
         val totalCostForCostStrategy = costStrategySelectedAssets.sumOf { it.activationCost }
