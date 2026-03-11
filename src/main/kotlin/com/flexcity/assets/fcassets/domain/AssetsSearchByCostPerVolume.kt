@@ -18,11 +18,8 @@ class AssetsSearchByCostPerVolume(
         assetsList: List<Asset>,
         assetRequest: AssetRequest
     ): List<AvailableAsset> {
-        val availableAssets = assetsList.filter { it.availableDates.contains(assetRequest.activationDate) }
-        if (availableAssets.isEmpty()) return emptyList()
-
         val assetsSortedByCostPerVolume =
-            availableAssets.sortedBy { it.activationCost / it.volume.toDouble() }
+            assetsList.sortedBy { it.activationCost / it.volume.toDouble() }
 
         return assetSelectionService.selectAssets(assetsSortedByCostPerVolume, assetRequest.requestedVolume)
     }

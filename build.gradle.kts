@@ -29,12 +29,14 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.h2database:h2")
+    runtimeOnly("org.postgresql:postgresql:42.7.10")
     testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
     testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
+    runtimeOnly("org.postgresql:postgresql")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 

@@ -18,10 +18,7 @@ class AssetsSearchByIncreasingCost(
         assetsList: List<Asset>,
         assetRequest: AssetRequest
     ): List<AvailableAsset> {
-        val availableAssets = assetsList.filter { it.availableDates.contains(assetRequest.activationDate) }
-        if (availableAssets.isEmpty()) return emptyList()
-
-        val assetsSortedByCost = availableAssets.sortedBy { it.activationCost }
+        val assetsSortedByCost = assetsList.sortedBy { it.activationCost }
 
         return assetSelectionService.selectAssets(assetsSortedByCost, assetRequest.requestedVolume)
     }

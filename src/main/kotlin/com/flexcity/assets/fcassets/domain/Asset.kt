@@ -1,14 +1,22 @@
 package com.flexcity.assets.fcassets.domain
 
-import java.time.LocalDate
+import jakarta.persistence.*
 
 /**
  * Represents an asset in the system.
  */
+@Entity
 data class Asset (
+
+    @Id
     val code: String,
+
     val name: String,
+
     val activationCost: Double,
-    val availableDates: List<LocalDate>,
-    val volume: Int
+
+    val volume: Int,
+
+    @OneToMany(mappedBy = "asset", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    val availableDates: List<AssetAvailability> = emptyList()
 )

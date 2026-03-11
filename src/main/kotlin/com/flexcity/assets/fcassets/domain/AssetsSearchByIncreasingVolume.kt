@@ -18,10 +18,7 @@ class AssetsSearchByIncreasingVolume(
         assetsList: List<Asset>,
         assetRequest: AssetRequest
     ): List<AvailableAsset> {
-        val availableAssets  = assetsList.filter { it.availableDates.contains(assetRequest.activationDate) }
-        if (availableAssets .isEmpty()) return emptyList()
-
-        val assetsSortedByVolume = availableAssets.sortedBy { it.volume }
+        val assetsSortedByVolume = assetsList.sortedBy { it.volume }
 
         return assetSelectionService.selectAssets(assetsSortedByVolume, assetRequest.requestedVolume)
     }
