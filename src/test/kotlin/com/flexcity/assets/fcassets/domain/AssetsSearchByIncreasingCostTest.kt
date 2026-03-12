@@ -14,10 +14,38 @@ class AssetsSearchByIncreasingCostTest {
     private lateinit var assetSelectionService: AssetSelectionService
     private lateinit var assetStrategy: AssetsSearchByIncreasingCost
 
-    private val assets = listOf(
-        Asset("A1", "Asset 1", 100.0, listOf(LocalDate.of(2026,3,10)), 50),
-        Asset("A2", "Asset 2", 80.0, listOf(LocalDate.of(2026,3,10)), 30),
-        Asset("A3", "Asset 3", 120.0, listOf(LocalDate.of(2026,3,11)), 60)
+    val asset1 = Asset(
+        code = "A1",
+        name = "Asset 1",
+        activationCost = 100.0,
+        volume = 50,
+        availableDates = emptyList()
+    )
+
+    val asset2 = Asset(
+        code = "A2",
+        name = "Asset 2",
+        activationCost = 80.0,
+        volume = 30,
+        availableDates = emptyList()
+    )
+
+    val asset3 = Asset(
+        code = "A3",
+        name = "Asset 3",
+        activationCost = 120.0,
+        volume = 60,
+        availableDates = emptyList()
+    )
+
+    val availability1 = AssetAvailability(date = LocalDate.of(2026, 3, 10), asset = asset1)
+    val availability2 = AssetAvailability(date = LocalDate.of(2026, 3, 10), asset = asset2)
+    val availability3 = AssetAvailability(date = LocalDate.of(2026, 3, 11), asset = asset3)
+
+    val assets = listOf(
+        asset1.copy(availableDates = listOf(availability1)),
+        asset2.copy(availableDates = listOf(availability2)),
+        asset3.copy(availableDates = listOf(availability3))
     )
 
     private val assetsByCode = assets.associateBy { it.code }
@@ -39,7 +67,11 @@ class AssetsSearchByIncreasingCostTest {
 
         availableAssets.forEach { asset ->
             val originalAsset = requireNotNull(assetsByCode[asset.code])
-            assertTrue(originalAsset.availableDates.contains(request.activationDate))
+            val requestActivationDate: LocalDate = request.activationDate
+            assertTrue(
+                originalAsset.availableDates.any { it.date == requestActivationDate },
+                "Asset needs to have the requested activation date"
+            )
             assertEquals(originalAsset.activationCost, asset.activationCost)
         }
     }

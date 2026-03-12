@@ -1,37 +1,28 @@
 package com.flexcity.assets.fcassets.util
 
 import com.flexcity.assets.fcassets.domain.Asset
+import com.flexcity.assets.fcassets.domain.AssetAvailability
 import java.time.LocalDate
 
 class AssetGeneration {
 
-    fun generateAssets(
-        count: Int
-    ): List<Asset> {
-        val assetsGenerated: MutableList<Asset> = mutableListOf()
-
-        for(itemCount in 1..count){
+    fun generateAssets(count: Int): List<Asset> {
+        return (1..count).map { itemCount ->
             val randomVolume = (10..100).random()
             val randomCost = (10..500).random().toDouble()
             val numberOfDaysAvailable = (1..7).random()
             val randomDays = (10..16).shuffled().take(numberOfDaysAvailable)
-
-            val daysAvailable: MutableList<LocalDate> = mutableListOf()
-
-            randomDays.forEach { day ->
-                daysAvailable.add(LocalDate.of(2026, 3, day))
-            }
-
-            val assetGenerated = Asset(
-                "A$itemCount",
-                "Asset $itemCount",
-                randomCost,
-                daysAvailable,
-                randomVolume
+            val asset = Asset(
+                code = "A$itemCount",
+                name = "Asset $itemCount",
+                activationCost = randomCost,
+                volume = randomVolume,
+                availableDates = emptyList()
             )
-
-            assetsGenerated.add(assetGenerated)
+            val availabilities = randomDays.map { day ->
+                AssetAvailability(id = 0, date = LocalDate.of(2026, 3, day), asset = asset)
+            }
+            asset.copy(availableDates = availabilities)
         }
-        return assetsGenerated
     }
 }
